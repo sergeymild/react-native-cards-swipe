@@ -288,7 +288,6 @@ export const CardsSwipe = forwardRef(
       );
 
       return {
-        zIndex: -1,
         width: '100%',
         height: '100%',
         position: 'absolute',
@@ -301,6 +300,8 @@ export const CardsSwipe = forwardRef(
         ],
       };
     });
+
+    console.log('[CardsSwipe.]', style);
 
     return (
       <View
@@ -316,6 +317,7 @@ export const CardsSwipe = forwardRef(
                   pointerEvents: 'none',
                   style: index === secondIndex ? {} : lowerStyle,
                   cardContainerStyle,
+                  zIndex: 1,
                 }}
               >
                 {renderCard(cards[secondIndex])}
@@ -337,6 +339,8 @@ export const CardsSwipe = forwardRef(
                   {...{
                     style,
                     cardContainerStyle,
+                    zIndex: 2,
+                    elevation: 2,
                   }}
                 >
                   {renderCard(cards[index])}
