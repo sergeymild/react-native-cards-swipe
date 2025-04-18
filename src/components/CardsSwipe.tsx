@@ -301,8 +301,6 @@ export const CardsSwipe = forwardRef(
       };
     });
 
-    console.log('[CardsSwipe.]', style);
-
     return (
       <View
         pointerEvents={lock ? 'none' : 'auto'}
@@ -310,53 +308,49 @@ export const CardsSwipe = forwardRef(
       >
         {cards.length > 0 && (
           <>
-            {secondIndex >= 0 && cards.length > secondIndex ? (
+            {/* render under card */}
+            {secondIndex >= 0 && cards.length > secondIndex && (
               <CardWrap
-                {...{
-                  key: keyExtractor?.(secondIndex) ?? ++uniqueIndex,
-                  pointerEvents: 'none',
-                  style: index === secondIndex ? {} : lowerStyle,
-                  cardContainerStyle,
-                  zIndex: 1,
-                }}
-              >
-                {renderCard(cards[secondIndex])}
-              </CardWrap>
-            ) : null}
-            {index >= 0 && index !== secondIndex ? (
+                key={keyExtractor?.(secondIndex) ?? ++uniqueIndex}
+                style={[index === secondIndex ? {} : lowerStyle, { zIndex: 1 }]}
+                cardContainerStyle={cardContainerStyle}
+                children={renderCard(cards[secondIndex])}
+              />
+            )}
+            {/* render visible card */}
+            {index >= 0 && index !== secondIndex && (
               <SwipePan
                 key={keyExtractor?.(index) ?? ++uniqueIndex}
-                {...{
-                  onSnap: onCardSwiped,
-                  onStart: onStartSwipe,
-                  onChangeDirection: onChangeSwipeDirection,
-                  x,
-                  y,
-                  originY,
-                }}
+                onSnap={onCardSwiped}
+                onStart={onStartSwipe}
+                onChangeDirection={onChangeSwipeDirection}
+                x={x}
+                y={y}
+                originY={originY}
               >
                 <CardWrap
-                  {...{
-                    style,
+                  style={style}
+                  cardContainerStyle={[
                     cardContainerStyle,
-                    zIndex: 2,
-                    elevation: 2,
-                  }}
+                    { zIndex: 2, elevation: 2 },
+                  ]}
                 >
                   {renderCard(cards[index])}
                   <Animated.View style={styles.overlay} pointerEvents={'none'}>
                     <View style={styles.row}>
-                      <Animated.View style={likeOpacityStyle}>
-                        {renderYep()}
-                      </Animated.View>
-                      <Animated.View style={nopeOpacityStyle}>
-                        {renderNope()}
-                      </Animated.View>
+                      <Animated.View
+                        style={likeOpacityStyle}
+                        children={renderYep()}
+                      />
+                      <Animated.View
+                        style={nopeOpacityStyle}
+                        children={renderNope()}
+                      />
                     </View>
                   </Animated.View>
                 </CardWrap>
               </SwipePan>
-            ) : null}
+            )}
           </>
         )}
         {renderNoMoreCardsContainer()}

@@ -3,7 +3,7 @@ import type { StyleProp, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 interface Props {
-  style: ViewStyle;
+  style: StyleProp<ViewStyle>;
   children?: React.ReactNode;
   cardContainerStyle: StyleProp<ViewStyle>;
 }
